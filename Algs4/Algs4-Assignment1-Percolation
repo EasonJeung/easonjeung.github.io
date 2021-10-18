@@ -23,7 +23,7 @@
   <meta name="description" content="源代码：https:&#x2F;&#x2F;github.com&#x2F;EasonJeung&#x2F;algs4&#x2F;blob&#x2F;main&#x2F;assignment1-Percolation&#x2F;src&#x2F; My Grade:只有 94 分，orz">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Algs4 Assignment1 Percolation">
-<meta property="og:url" content="http://example.com/2021/10/16/Algs4-Assignment1-Percolation/index.html">
+<meta property="og:url" content="http://example.com/Algs4/Algs4-Assignment1-Percolation">
 <meta property="og:site_name" content="EJ&#39;s Blog">
 <meta property="og:description" content="源代码：https:&#x2F;&#x2F;github.com&#x2F;EasonJeung&#x2F;algs4&#x2F;blob&#x2F;main&#x2F;assignment1-Percolation&#x2F;src&#x2F; My Grade:只有 94 分，orz">
 <meta property="og:locale" content="zh_CN">
@@ -37,7 +37,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://picgoej.oss-cn-beijing.aliyuncs.com/image-20210922090833311.png">
 
-<link rel="canonical" href="http://example.com/2021/10/16/Algs4-Assignment1-Percolation/">
+<link rel="canonical" href="http://example.com/Algs4/Algs4-Assignment1-Percolation">
 
 
 <script id="page-configurations">
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/16/Algs4-Assignment1-Percolation/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/Algs4/Algs4-Assignment1-Percolation">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -253,7 +253,7 @@
     <div class="post-nav">
       <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2021/10/16/Algs4-Assignment2-Queues/" rel="next" title="Algs4 Assignment2 Queues">
+    <a href="/Algs4/Algs4-Assignment2-Queues" rel="next" title="Algs4 Assignment2 Queues">
       Algs4 Assignment2 Queues <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
