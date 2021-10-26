@@ -177,10 +177,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-10-19 13:12:49 / 修改时间：14:03:38" itemprop="dateCreated datePublished" datetime="2021-10-19T13:12:49+08:00">2021-10-19</time>
+              <time title="创建时间：2021-10-19 13:12:49" itemprop="dateCreated datePublished" datetime="2021-10-19T13:12:49+08:00">2021-10-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-24 10:30:02" itemprop="dateModified" datetime="2021-10-24T10:30:02+08:00">2021-10-24</time>
+              </span>
 
           
 
@@ -194,48 +200,21 @@
 
       
           <p>在 Java 中，所有的类都继承了 <code>equals()</code> 方法。</p>
-<p>对 Java 相等(Equality)，满足以下几个性质：</p>
+<h1 id="等价性-Equality"><a href="#等价性-Equality" class="headerlink" title="等价性(Equality)"></a>等价性(Equality)</h1><p> Java 相等(Equality)，满足以下几个性质：</p>
 <ul>
 <li>自反性(Reflexive): <code>x.equals(x)</code> 为 <code>true</code>。</li>
 <li>对称性(Symmetric): 当且仅当<code>x.equals(y)</code>为<code>true</code>时 <code>y.equals(x)</code>为<code>true</code>。</li>
 <li>传递性(Transitive): 如果 <code>x.equals(y)</code>与 <code>y.equals(z)</code>均为<code>true</code>，有<code>x.equals(z)</code>为<code>true</code>。</li>
 <li>非空性(Non-null): <code>x.equals(null)</code> 为<code>false</code>。</li>
 </ul>
-<p>以比较日期(Date)是否相等为例：</p>
-<p>很容易有如下实现：</p>
-<p><img src="https://picgoej.oss-cn-beijing.aliyuncs.com/image-20211019132824793.png" alt="image-20211019132824793"></p>
-<p>但这里面有很多细节需要我们考虑：</p>
-<ul>
-<li>使用可以继承的 equals() 通常是不安全的，可能会导致违反对称性。 故使用 final 来限制 Date 类，使其不可继承。(并没有那么严格，不用 final 限制也没太大毛病)</li>
-<li>equals() 的参数类型必须是 Object，关于这一点，依旧有争论，但大家通常都这么写。</li>
-<li>检查是不是自己，若对象的引用和参数对象的引用相同，可以免去其他所有测试工作。</li>
-<li>检查参数是否为 null，为 null 直接返回 false，避免下面的代码使用空引用。</li>
-<li>判断类是否相同，不同直接返回 false。</li>
-<li>最后判断对应字段的值是否相同。</li>
-</ul>
-<p>用户自定类型的 equals() 方法的重写模板：</p>
-<blockquote>
-<ol>
-<li>参数类型为 Object。</li>
-<li>优化引用相等。即判断对象和参数的引用是不是相同，相同则省去后续比较。</li>
-<li>非空检查。</li>
-<li>判断同类。</li>
-<li>类型转换。</li>
-<li>比较对应字段<ul>
-<li>原始类型，用 <code>==</code></li>
-<li>object，用 equals()</li>
-<li>数组，对每一项逐个检查。使用 <code>Arrays.equals(a,b)</code>或 <code>Arrays.deepEquals(a,b)</code>，不要用 <code>a.equals(b)</code>(这是比较a与b是否指向同一内存地址，而不是各项值是否逻辑上相等)</li>
-</ul>
-</li>
-</ol>
-</blockquote>
-<p>最佳实践(Best practices)</p>
-<ol>
-<li>把那些更有可能不等的字段放在前面比较</li>
-<li>让 <code>compareTo()</code> 与 <code>equals()</code>保持一致，即当且仅当 <code>x.compareTo(y) == 0</code>时 <code>x.equals(y)</code> 为 true。</li>
-<li>不用比较那些依赖于其他字段的<em>计算字段(calculated fields)<em>，例如，比较长方形是否相等，只用比较二者<strong>长</strong>和<strong>宽</strong>，而不必比较二者**面积</em></em>(面积为长和宽计算而来)。</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/19/Algs4/JavaEquality/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -458,10 +437,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-10-18 22:03:09 / 修改时间：22:05:16" itemprop="dateCreated datePublished" datetime="2021-10-18T22:03:09+08:00">2021-10-18</time>
+              <time title="创建时间：2021-10-18 22:03:09" itemprop="dateCreated datePublished" datetime="2021-10-18T22:03:09+08:00">2021-10-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-26 17:24:30" itemprop="dateModified" datetime="2021-10-26T17:24:30+08:00">2021-10-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>

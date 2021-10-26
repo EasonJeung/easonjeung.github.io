@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在 Java 中，所有的类都继承了 equals() 方法。 对 Java 相等(Equality)，满足以下几个性质：  自反性(Reflexive): x.equals(x) 为 true。 对称性(Symmetric): 当且仅当x.equals(y)为true时 y.equals(x)为true。 传递性(Transitive): 如果 x.equals(y)与 y.equals(z)均为">
+  <meta name="description" content="在 Java 中，所有的类都继承了 equals() 方法。 等价性(Equality) Java 相等(Equality)，满足以下几个性质：  自反性(Reflexive): x.equals(x) 为 true。 对称性(Symmetric): 当且仅当x.equals(y)为true时 y.equals(x)为true。 传递性(Transitive): 如果 x.equals(y)与 y">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 对象等价性与 equals()方法的重写">
 <meta property="og:url" content="http://example.com/2021/10/19/Algs4/JavaEquality/index.html">
 <meta property="og:site_name" content="EJ&#39;s Blog">
-<meta property="og:description" content="在 Java 中，所有的类都继承了 equals() 方法。 对 Java 相等(Equality)，满足以下几个性质：  自反性(Reflexive): x.equals(x) 为 true。 对称性(Symmetric): 当且仅当x.equals(y)为true时 y.equals(x)为true。 传递性(Transitive): 如果 x.equals(y)与 y.equals(z)均为">
+<meta property="og:description" content="在 Java 中，所有的类都继承了 equals() 方法。 等价性(Equality) Java 相等(Equality)，满足以下几个性质：  自反性(Reflexive): x.equals(x) 为 true。 对称性(Symmetric): 当且仅当x.equals(y)为true时 y.equals(x)为true。 传递性(Transitive): 如果 x.equals(y)与 y">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://picgoej.oss-cn-beijing.aliyuncs.com/image-20211019132824793.png">
 <meta property="article:published_time" content="2021-10-19T05:12:49.000Z">
-<meta property="article:modified_time" content="2021-10-19T06:03:38.248Z">
+<meta property="article:modified_time" content="2021-10-24T02:30:02.146Z">
 <meta property="article:author" content="Eason Jeung">
 <meta property="article:tag" content="Algs4">
 <meta property="article:tag" content="Java">
@@ -182,10 +182,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-10-19 13:12:49 / 修改时间：14:03:38" itemprop="dateCreated datePublished" datetime="2021-10-19T13:12:49+08:00">2021-10-19</time>
+              <time title="创建时间：2021-10-19 13:12:49" itemprop="dateCreated datePublished" datetime="2021-10-19T13:12:49+08:00">2021-10-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-24 10:30:02" itemprop="dateModified" datetime="2021-10-24T10:30:02+08:00">2021-10-24</time>
+              </span>
 
           
 
@@ -199,14 +205,16 @@
 
       
         <p>在 Java 中，所有的类都继承了 <code>equals()</code> 方法。</p>
-<p>对 Java 相等(Equality)，满足以下几个性质：</p>
+<h1 id="等价性-Equality"><a href="#等价性-Equality" class="headerlink" title="等价性(Equality)"></a>等价性(Equality)</h1><p> Java 相等(Equality)，满足以下几个性质：</p>
 <ul>
 <li>自反性(Reflexive): <code>x.equals(x)</code> 为 <code>true</code>。</li>
 <li>对称性(Symmetric): 当且仅当<code>x.equals(y)</code>为<code>true</code>时 <code>y.equals(x)</code>为<code>true</code>。</li>
 <li>传递性(Transitive): 如果 <code>x.equals(y)</code>与 <code>y.equals(z)</code>均为<code>true</code>，有<code>x.equals(z)</code>为<code>true</code>。</li>
 <li>非空性(Non-null): <code>x.equals(null)</code> 为<code>false</code>。</li>
 </ul>
-<p>以比较日期(Date)是否相等为例：</p>
+<span id="more"></span>
+
+<h1 id="equals-重写例子"><a href="#equals-重写例子" class="headerlink" title="equals()重写例子"></a>equals()重写例子</h1><p>以比较日期(Date)是否相等为例：</p>
 <p>很容易有如下实现：</p>
 <p><img src="https://picgoej.oss-cn-beijing.aliyuncs.com/image-20211019132824793.png" alt="image-20211019132824793"></p>
 <p>但这里面有很多细节需要我们考虑：</p>
@@ -218,7 +226,7 @@
 <li>判断类是否相同，不同直接返回 false。</li>
 <li>最后判断对应字段的值是否相同。</li>
 </ul>
-<p>用户自定类型的 equals() 方法的重写模板：</p>
+<h1 id="equals-重写模板"><a href="#equals-重写模板" class="headerlink" title="equals()重写模板"></a>equals()重写模板</h1><p>用户自定类型的 equals() 方法的重写模板：</p>
 <blockquote>
 <ol>
 <li>参数类型为 Object。</li>
@@ -238,8 +246,13 @@
 <ol>
 <li>把那些更有可能不等的字段放在前面比较</li>
 <li>让 <code>compareTo()</code> 与 <code>equals()</code>保持一致，即当且仅当 <code>x.compareTo(y) == 0</code>时 <code>x.equals(y)</code> 为 true。</li>
-<li>不用比较那些依赖于其他字段的<em>计算字段(calculated fields)<em>，例如，比较长方形是否相等，只用比较二者<strong>长</strong>和<strong>宽</strong>，而不必比较二者**面积</em></em>(面积为长和宽计算而来)。</li>
+<li>不用比较那些依赖于其他字段的*计算字段(calculated fields)*，例如，比较长方形是否相等，只用比较二者<strong>长</strong>和<strong>宽</strong>，而不必比较二者<strong>面积</strong>是否相等(面积为长和宽计算而来)。</li>
 </ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>图片截图于 Coursera 上 普林斯顿算法 <a target="_blank" rel="noopener" href="https://www.coursera.org/learn/algorithms-part1/home/welcome">Algs4</a> 的 lecture slides <a target="_blank" rel="noopener" href="https://www.coursera.org/learn/algorithms-part1/supplement/2kwpU/lecture-slides">31 ElementarySymbolTables</a></p>
+<p>全文参考除上述 slides，还有 <a target="_blank" rel="noopener" href="https://book.douban.com/subject/19952400/">算法第4版中文版</a></p>
+<hr>
+<p>版权声明：<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">署名-相同方式共享 4.0 国际标准</a></p>
+<p>关于博客版权可查看：<a target="_blank" rel="noopener" href="https://www.barretlee.com/blog/2016/02/27/about-cc/">谈一谈博客的著作版权问题</a></p>
 
     </div>
 
@@ -321,6 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AD%89%E4%BB%B7%E6%80%A7-Equality"><span class="nav-number">1.</span> <span class="nav-text">等价性(Equality)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#equals-%E9%87%8D%E5%86%99%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">equals()重写例子</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#equals-%E9%87%8D%E5%86%99%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.</span> <span class="nav-text">equals()重写模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
