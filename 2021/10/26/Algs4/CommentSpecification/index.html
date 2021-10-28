@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言《代码整洁之道》里说：“注释总是一种失败，只是我们无法用代码就清晰表达我们意思的妥协之策。”  当你觉得需要一堆注释来解释你的代码时，你最好去把那堆代码弄干净。  在编程过程中，我们应尽可能让代码含义看起来不言自明。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 注释规范">
+<meta property="og:url" content="http://example.com/2021/10/26/Algs4/CommentSpecification/index.html">
+<meta property="og:site_name" content="EJ&#39;s Blog">
+<meta property="og:description" content="前言《代码整洁之道》里说：“注释总是一种失败，只是我们无法用代码就清晰表达我们意思的妥协之策。”  当你觉得需要一堆注释来解释你的代码时，你最好去把那堆代码弄干净。  在编程过程中，我们应尽可能让代码含义看起来不言自明。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-26T13:38:46.000Z">
+<meta property="article:modified_time" content="2021-10-27T01:35:56.324Z">
+<meta property="article:author" content="Eason Jeung">
+<meta property="article:tag" content="humility">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/10/26/Algs4/CommentSpecification/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java 注释规范 | EJ's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">EJ's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">It is hard to write even the smallest piece of code correctly.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/26/Algs4/CommentSpecification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Eason Jeung">
+      <meta itemprop="description" content="Our whole world runs on big, complex pieces of code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="EJ's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 注释规范
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-26 21:38:46" itemprop="dateCreated datePublished" datetime="2021-10-26T21:38:46+08:00">2021-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-27 09:35:56" itemprop="dateModified" datetime="2021-10-27T09:35:56+08:00">2021-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>《代码整洁之道》里说：“<strong>注释总是一种失败，只是我们无法用代码就清晰表达我们意思的妥协之策。</strong>”</p>
+<blockquote>
+<p>当你觉得需要一堆注释来解释你的代码时，你最好去把那堆代码弄干净。</p>
+</blockquote>
+<p>在编程过程中，我们应<strong>尽可能</strong>让代码含义看起来不言自明。</p>
+<span id="more"></span>
+
+<h1 id="注释的原则"><a href="#注释的原则" class="headerlink" title="注释的原则"></a>注释的原则</h1><h2 id="1-注释形式统一"><a href="#1-注释形式统一" class="headerlink" title="1. 注释形式统一"></a>1. 注释形式统一</h2><p>整个项目中，保持注释风格、标点、结构等一致。若项目已有规范体系，follow it.</p>
+<h2 id="2-注释与代码的一致性"><a href="#2-注释与代码的一致性" class="headerlink" title="2. 注释与代码的一致性"></a>2. 注释与代码的一致性</h2><p>描述性注释先于代码创建，解释性注释在开发过程中创建，提示性注释在代码完成后创建。</p>
+<p>修改代码应同时修改/添加相应的注释，以保证代码与注释的同步。</p>
+<h2 id="3-注释的位置"><a href="#3-注释的位置" class="headerlink" title="3. 注释的位置"></a>3. 注释的位置</h2><p>就近原则：在代码的上方或右侧。</p>
+<p>避免在代码行尾添加注释，这样会降低代码可读性。</p>
+<p>但在批注变量声明时，右侧行尾注释是被接受的，但注意把行尾注释对齐。</p>
+<h2 id="4-注释的数量"><a href="#4-注释的数量" class="headerlink" title="4. 注释的数量"></a>4. 注释的数量</h2><p>一般占总代码量的 20% 为宜。</p>
+<h2 id="5-删除无用注释"><a href="#5-删除无用注释" class="headerlink" title="5. 删除无用注释"></a>5. 删除无用注释</h2><p>在代码交付或部署前，务必删除无用注释，以免引起日后维护工作的混乱。</p>
+<h2 id="6-必加的注释"><a href="#6-必加的注释" class="headerlink" title="6. 必加的注释"></a>6. 必加的注释</h2><p>典型算法必须添加注释。</p>
+<p>代码不清晰或不可移植处必须添加注释。</p>
+<p>代码修改处必须添加<strong>修改标识</strong>的注释。</p>
+<p>在循环和逻辑分支组成的代码中添加注释。</p>
+<p>为了防止问题反复出现，对错误修复和解决方法的代码使用注释，尤其是在团队环境中。</p>
+<h1 id="Java-注释技巧"><a href="#Java-注释技巧" class="headerlink" title="Java 注释技巧"></a>Java 注释技巧</h1><h2 id="0-注释符号与注释之间有空格"><a href="#0-注释符号与注释之间有空格" class="headerlink" title="0. 注释符号与注释之间有空格"></a>0. 注释符号与注释之间有空格</h2><p><code>//</code>或<code>/*</code>或<code>//*</code>后有一个空格，然后才是注释本身。这样在没有语法高亮时(例如使用txt阅读代码)能够迅速找到注释。</p>
+<h2 id="1-长度限制"><a href="#1-长度限制" class="headerlink" title="1. 长度限制"></a>1. 长度限制</h2><p>无论是代码还是注释，每行建议不要超过120字符，或者80字符。(看个人或团队习惯选择120字符或80字符)</p>
+<h2 id="2-代码尾部注释-应尽量尝试缩短函数"><a href="#2-代码尾部注释-应尽量尝试缩短函数" class="headerlink" title="2. 代码尾部注释(应尽量尝试缩短函数)"></a>2. 代码尾部注释(应尽量尝试缩短函数)</h2><p>当代码较长，或是含有多重嵌套时，可以在结尾的 <code>&#125;</code>后注释该闭合的起点，提升代码可读性。不必写得很长，能表示是哪个控制语句范围结束即可。</p>
+<blockquote>
+<p>如果你发现自己想标记右花括号，其实应该做得是缩短函数。 —— 《代码整洁之道》</p>
+</blockquote>
+<h2 id="3-不要加框"><a href="#3-不要加框" class="headerlink" title="3.不要加框"></a>3.不要加框</h2><p>给注释加框看起来可能很漂亮，但后期更改注释维护这份”漂亮”可能比你写注释更费工夫。</p>
+<p>如下方这种注释，后续更改其中文本时，为了让文字居中且末尾对齐，得很仔细地调整，<strong>不要用!!!</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/* -------------------------------------------------------------------------- */</span></span><br><span class="line"><span class="comment">/*                                Example text                                */</span></span><br><span class="line"><span class="comment">/* -------------------------------------------------------------------------- */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用下方这种即可(80个字符长度) (注释截取自<a target="_blank" rel="noopener" href="https://coursera.cs.princeton.edu/algs4/">普林斯顿算法课</a>编程作业提供代码)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/******************************************************************************</span></span><br><span class="line"><span class="comment"> *  Compilation:  javac RangeSearchVisualizer.java</span></span><br><span class="line"><span class="comment"> *  Execution:    java RangeSearchVisualizer input.txt</span></span><br><span class="line"><span class="comment"> *  Dependencies: PointSET.java KdTree.java</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  Read points from a file (specified as a command-line argument) and</span></span><br><span class="line"><span class="comment"> *  draw to standard draw. Also draw all of the points in the rectangle</span></span><br><span class="line"><span class="comment"> *  the user selects by dragging the mouse.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  The range search results using the brute-force algorithm are drawn</span></span><br><span class="line"><span class="comment"> *  in red; the results using the kd-tree algorithms are drawn in blue.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> ******************************************************************************/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-注释多行代码"><a href="#4-注释多行代码" class="headerlink" title="4. 注释多行代码"></a>4. 注释多行代码</h2><p>首先选中这多行代码，然后使用键盘快捷键(IDEA是 <code>Ctrl + /</code>)注释多行代码，再按一次则取消注释。</p>
+<p>避免使用<code>/* ... code segment ... */</code>，还需要找对应的 <code>/*</code>与<code>*/</code>，没有选中后注释快捷键效率高。</p>
+<h2 id="5-注释作为切换开关，临时测试屏蔽代码片段"><a href="#5-注释作为切换开关，临时测试屏蔽代码片段" class="headerlink" title="5. 注释作为切换开关，临时测试屏蔽代码片段"></a>5. 注释作为切换开关，临时测试屏蔽代码片段</h2><p>例1：此时 code segment_1 未被注释。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//*/</span></span><br><span class="line">...</span><br><span class="line">code segment_1;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//*/</span></span><br></pre></td></tr></table></figure>
+
+<p>只需要删除第一行的第一个 <code>/</code>，code segment_1 被注释。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*/</span></span><br><span class="line"><span class="comment">...</span></span><br><span class="line"><span class="comment">code segment_1;</span></span><br><span class="line"><span class="comment">...</span></span><br><span class="line"><span class="comment">//*/</span></span><br></pre></td></tr></table></figure>
+
+<p>例2：code segment_1 未被注释而code segment_2 被注释。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//*/</span></span><br><span class="line">...</span><br><span class="line">code segment_1;</span><br><span class="line">...</span><br><span class="line"><span class="comment">/*/</span></span><br><span class="line"><span class="comment">code segment_2;</span></span><br><span class="line"><span class="comment">//*/</span></span><br></pre></td></tr></table></figure>
+
+<p>只需要删除第一行的第一个 <code>/</code>，code segment_1 被注释而code segment_2 未被注释。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*/</span></span><br><span class="line"><span class="comment">...</span></span><br><span class="line"><span class="comment">code segment_1;</span></span><br><span class="line"><span class="comment">...</span></span><br><span class="line"><span class="comment">/*/</span></span><br><span class="line">code segment_2;</span><br><span class="line"><span class="comment">//*/</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Java-各种注释格式"><a href="#Java-各种注释格式" class="headerlink" title="Java 各种注释格式"></a>Java 各种注释格式</h1><h2 id="1-单行注释"><a href="#1-单行注释" class="headerlink" title="1. 单行注释 //"></a>1. 单行注释 //</h2><h3 id="a-单独行注释"><a href="#a-单独行注释" class="headerlink" title="a. 单独行注释"></a>a. 单独行注释</h3><p>注释前最好有一行空行，并与它所注释的代码段拥有相同的缩进层级。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">pulic <span class="class"><span class="keyword">class</span> <span class="title">KdTree</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 注释一</span></span><br><span class="line">    code segment_1&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注释二</span></span><br><span class="line">        code segment_2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果一行无法完成，请采用块注释(见下方 2.块注释)。</p>
+<h3 id="b-行头注释"><a href="#b-行头注释" class="headerlink" title="b. 行头注释"></a>b. 行头注释</h3><p>注释该行代码，使其失去意义。</p>
+<h3 id="c-行尾注释"><a href="#c-行尾注释" class="headerlink" title="c. 行尾注释"></a>c. 行尾注释</h3><p>常用来批注变量声明，代码后跟8个(至少4个)空格(或更多空格，个人习惯用 tab )，所有注释必须对齐。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;              <span class="comment">// 行尾注释1</span></span><br><span class="line"><span class="keyword">double</span> radius = <span class="number">3.56</span>;   <span class="comment">// 行尾注释2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-块注释-…"><a href="#2-块注释-…" class="headerlink" title="2. 块注释 /* … */"></a>2. 块注释 /* … */</h2><p>注释若干行，通常用于提供文件、方法、数据结构等的意义与用途的说明，或者算法的描述。</p>
+<p>一般位于一个文件或者一个方法的前面，起到引导的作用，也可以根据需要放在合适的位置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 注释1</span></span><br><span class="line"><span class="comment">* 注释2</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-文档注释-…"><a href="#3-文档注释-…" class="headerlink" title="3. 文档注释 /** …*/"></a>3. 文档注释 /** …*/</h2><p>注释若干行，并写入javadoc文档。每个文档注释都会被置于注释定界符/** …*/之中，注释文档将用来生成HTML格式的代码报告，所以文档注释必须书写在类、域、构造函数、方法，以及字段(field)定义之前。注释文档由两部分组成——<strong>描述</strong>与<strong>块标记</strong>。</p>
+<p>如下方代码(代码来源：<a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-documentation.html">Java 文档注释</a>)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 这个类演示了文档注释</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> Ayan Amhed</span></span><br><span class="line"><span class="comment">* <span class="doctag">@version</span> 1.2</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SquareNum</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * This method returns the square of num.</span></span><br><span class="line"><span class="comment">   * This is a multiline description. You can use</span></span><br><span class="line"><span class="comment">   * as many lines as you like.</span></span><br><span class="line"><span class="comment">   * </span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> num The value to be squared.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> num squared.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> num)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> num * num;</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * This method inputs a number from the user.</span></span><br><span class="line"><span class="comment">   * </span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> The value input as a double.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@exception</span> IOException On input error.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@see</span> IOException</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getNumber</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">      InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(System.in);</span><br><span class="line">      BufferedReader inData = <span class="keyword">new</span> BufferedReader(isr);</span><br><span class="line">      String str;</span><br><span class="line">      str = inData.readLine();</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">new</span> Double(str)).doubleValue();</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * This method demonstrates square().</span></span><br><span class="line"><span class="comment">   * </span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> args Unused.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> Nothing.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@exception</span> IOException On input error.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@see</span> IOException</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      SquareNum ob = <span class="keyword">new</span> SquareNum();</span><br><span class="line">      <span class="keyword">double</span> val;</span><br><span class="line">      System.out.println(<span class="string">&quot;Enter value to be squared: &quot;</span>);</span><br><span class="line">      val = ob.getNumber();</span><br><span class="line">      val = ob.square(val);</span><br><span class="line">      System.out.println(<span class="string">&quot;Squared value is &quot;</span> + val);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Java注释具体实现"><a href="#Java注释具体实现" class="headerlink" title="Java注释具体实现"></a>Java注释具体实现</h1><h1 id="0-一些需要被抛弃的习惯"><a href="#0-一些需要被抛弃的习惯" class="headerlink" title="0. 一些需要被抛弃的习惯"></a>0. 一些需要被抛弃的习惯</h1><p>在现代版本控制系统的帮助下，很多旧习惯，如代码修改日志、代码归属与署名，注释代码而不是删除代码，都应该大胆舍弃。</p>
+<h2 id="1-源文件注释"><a href="#1-源文件注释" class="headerlink" title="1. 源文件注释"></a>1. 源文件注释</h2><p>在文件起始处使用块注释(个人更倾向于使用普林斯顿那种用一行 * 表示分割的)</p>
+<p>一个模板(根据自己需求增删条目)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/******************************************************************************</span></span><br><span class="line"><span class="comment"> *  File name:</span></span><br><span class="line"><span class="comment"> *  Created by:</span></span><br><span class="line"><span class="comment"> *  Created time:</span></span><br><span class="line"><span class="comment"> *  Description：</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  Modified by:</span></span><br><span class="line"><span class="comment"> *  Modified time:</span></span><br><span class="line"><span class="comment"> *  Modify description:</span></span><br><span class="line"><span class="comment"> *  Version:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> ******************************************************************************/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-类-模块-注释"><a href="#2-类-模块-注释" class="headerlink" title="2. 类(模块)注释"></a>2. 类(模块)注释</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* CopyRright (c)2008-xxxx: &lt;展望软件Forsoft &gt;</span></span><br><span class="line"><span class="comment">* Project: &lt;项目工程名 &gt;</span></span><br><span class="line"><span class="comment">* Module ID: &lt;(模块)类编号，可以引用系统设计中的类编号&gt;</span></span><br><span class="line"><span class="comment">* Comments: &lt;对此类的描述，可以引用系统设计中的描述&gt;</span></span><br><span class="line"><span class="comment">* JDK version used: &lt;JDK1.6&gt;</span></span><br><span class="line"><span class="comment">* Namespace: &lt;命名空间&gt;</span></span><br><span class="line"><span class="comment">* Author： &lt;作者中文名或拼音缩写&gt;</span></span><br><span class="line"><span class="comment">* Create Date： &lt;创建日期，格式:YYYY-MM-DD&gt;</span></span><br><span class="line"><span class="comment">* Modified By： &lt;修改人中文名或拼音缩写&gt;</span></span><br><span class="line"><span class="comment">* Modified Date: &lt;修改日期，格式:YYYY-MM-DD&gt;</span></span><br><span class="line"><span class="comment">* Why &amp; What is modified &lt;修改原因描述&gt;</span></span><br><span class="line"><span class="comment">* Version: &lt;版本号&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>如果模块只进行部分少量代码的修改时，则每次修改须添加以下注释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rewriter:&lt;修改人中文名或拼音缩写&gt;</span></span><br><span class="line"><span class="comment">// Rewrite Date：&lt;修改日期:格式YYYY-MM-DD&gt; </span></span><br><span class="line"><span class="comment">// Start_1_old：</span></span><br><span class="line"><span class="comment">/* 原代码内容*/</span></span><br><span class="line"><span class="comment">// End_1_old：</span></span><br></pre></td></tr></table></figure>
+
+<p>将原代码内容注释掉，然后添加新代码使用以下注释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Added by: &lt;修改人中文名或拼音缩写&gt;</span></span><br><span class="line"><span class="comment">// Add date：&lt;添加日期，格式：YYYY-MM-DD&gt; </span></span><br><span class="line"><span class="comment">// Start_1_new：</span></span><br><span class="line"><span class="keyword">new</span> code;</span><br><span class="line"><span class="comment">// End_1_new：</span></span><br></pre></td></tr></table></figure>
+
+<p>如果模块输入输出参数或功能结构有较大修改，则每次修改必须添加以下<br>注释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Log ID：&lt;Log编号,从1开始一次增加&gt;</span></span><br><span class="line"><span class="comment">// Depiction：&lt;对此修改的描述&gt;</span></span><br><span class="line"><span class="comment">// Writer：&lt;修改者中文名或拼音缩写&gt;</span></span><br><span class="line"><span class="comment">// Rewrite Date：&lt;模块修改日期，格式：YYYY-MM-DD&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-接口注释"><a href="#3-接口注释" class="headerlink" title="3. 接口注释"></a>3. 接口注释</h2><p>接口注释采用 /** … */，在满足类注释的基础之上，接口注释应包含接口目的描述、该接口如何被使用以及如何不被使用。</p>
+<p>在接口注释清楚的前提下对应的实现类可以不加注释。</p>
+<h2 id="4-构造函数注释"><a href="#4-构造函数注释" class="headerlink" title="4. 构造函数注释"></a>4. 构造函数注释</h2><p>构造函数注释采用 /** … */，需注明构造函数作用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 默认构造函数</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Description : 带参数构造函数,</span></span><br><span class="line"><span class="comment">* 初始化模式名,名称和数据源类型。</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> schema： 模式名</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> name： 名称</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> type： 数据源类型</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-函数注释"><a href="#5-函数注释" class="headerlink" title="5. 函数注释"></a>5. 函数注释</h2><p>函数注释采用 /** … */，在每个函数或过程前须有必要的注释信息，包括：函数或过程名称；功能描述；输入、输出及返回值说明；调用关系及被调用关系说明等。函数注释里面可以不出现版本号（@version）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 函 数 名：</span></span><br><span class="line"><span class="comment">* 功能描述：</span></span><br><span class="line"><span class="comment">* 输入参数: &lt;按照参数定义顺序&gt;</span></span><br><span class="line"><span class="comment">* &lt;<span class="doctag">@param</span>后面空格后跟着参数的变量名字</span></span><br><span class="line"><span class="comment">* （不是类型），空格后跟着对该参数的描述。&gt;</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 返 回 值: - 类型 &lt;说明&gt;</span></span><br><span class="line"><span class="comment">* &lt;返回为空（void）的构造函数或者函数，</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span>可以省略; 如果返回值就是输入参数，必须 </span></span><br><span class="line"><span class="comment">* 用与输入参数的<span class="doctag">@param</span>相同的描述信息; 必要的时</span></span><br><span class="line"><span class="comment">* 候注明特殊条件写的返回值。&gt;</span></span><br><span class="line"><span class="comment">* 异 常：&lt;按照异常名字的字母顺序&gt;</span></span><br><span class="line"><span class="comment">* 创 建 人:</span></span><br><span class="line"><span class="comment">* 日 期:</span></span><br><span class="line"><span class="comment">* 修 改 人:</span></span><br><span class="line"><span class="comment">* 日 期:</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-方法注释"><a href="#6-方法注释" class="headerlink" title="6. 方法注释"></a>6. 方法注释</h2><p>方法注释采用 /** … */，对于设置 (Set 方法 ) 与获取 (Get 方法 ) 成员的方法，在成员变量已有说明的情况下，可以不加注释；普通成员方法要求说明完成什么功能，参数含义是什么且返回值什么；另外方法的创建时间必须注释清楚，为将来的维护和阅读提供宝贵线索。</p>
+<p>普林斯顿算法课提供 algs4.jar 包中的代码例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Inserts the specified key-value pair into the symbol table, overwriting the old </span></span><br><span class="line"><span class="comment"> * value with the new value if the symbol table already contains the specified key.</span></span><br><span class="line"><span class="comment"> * Deletes the specified key (and its associated value) from this symbol table</span></span><br><span class="line"><span class="comment"> * if the specified value is &#123;<span class="doctag">@code</span> null&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>  key the key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>  val the value</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IllegalArgumentException if &#123;<span class="doctag">@code</span> key&#125; is &#123;<span class="doctag">@code</span> null&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Key key, Value val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (key == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;calls put() with a null key&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (val == <span class="keyword">null</span>) &#123;</span><br><span class="line">        delete(key);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    root = put(root, key, val);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">check</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-方法内部注释"><a href="#7-方法内部注释" class="headerlink" title="7. 方法内部注释"></a>7. 方法内部注释</h2><p>对复杂的逻辑处理部分，要尽可能给出详细的注释。</p>
+<p>控制结构，代码做了什么以及为什么这样做。</p>
+<h2 id="8-全局变量注释"><a href="#8-全局变量注释" class="headerlink" title="8. 全局变量注释"></a>8. 全局变量注释</h2><p>对全局变量的功能、取值范围、哪些函数或者过程存取以及存取时注意事项等的说明。</p>
+<h2 id="9-局部（中间）变量注释"><a href="#9-局部（中间）变量注释" class="headerlink" title="9. 局部（中间）变量注释"></a>9. 局部（中间）变量注释</h2><p>主要变量必须有注释，无特别意义的情况下可以不加注释。</p>
+<h2 id="10-字段-filed-属性注释"><a href="#10-字段-filed-属性注释" class="headerlink" title="10. 字段(filed)/属性注释"></a>10. 字段(filed)/属性注释</h2><p>字段描述，属性说明。</p>
+<h2 id="11-常量注释"><a href="#11-常量注释" class="headerlink" title="11. 常量注释"></a>11. 常量注释</h2><p>常量通常具有一定的实际意义，要定义相应说明。</p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/304888">Java注释规范整理</a></p>
+<p>《代码整洁之道》第 4 章 - 注释</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/26/Algs4/Assignment5-KdTrees/" rel="prev" title="Algs4 Assignment5 Kd-Trees">
+      <i class="fa fa-chevron-left"></i> Algs4 Assignment5 Kd-Trees
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/28/else/RemainAndMod/" rel="next" title="取余与取模">
+      取余与取模 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E7%9A%84%E5%8E%9F%E5%88%99"><span class="nav-number">2.</span> <span class="nav-text">注释的原则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%B3%A8%E9%87%8A%E5%BD%A2%E5%BC%8F%E7%BB%9F%E4%B8%80"><span class="nav-number">2.1.</span> <span class="nav-text">1. 注释形式统一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%B3%A8%E9%87%8A%E4%B8%8E%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.2.</span> <span class="nav-text">2. 注释与代码的一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%B3%A8%E9%87%8A%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">3. 注释的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B3%A8%E9%87%8A%E7%9A%84%E6%95%B0%E9%87%8F"><span class="nav-number">2.4.</span> <span class="nav-text">4. 注释的数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%88%A0%E9%99%A4%E6%97%A0%E7%94%A8%E6%B3%A8%E9%87%8A"><span class="nav-number">2.5.</span> <span class="nav-text">5. 删除无用注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%BF%85%E5%8A%A0%E7%9A%84%E6%B3%A8%E9%87%8A"><span class="nav-number">2.6.</span> <span class="nav-text">6. 必加的注释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E6%B3%A8%E9%87%8A%E6%8A%80%E5%B7%A7"><span class="nav-number">3.</span> <span class="nav-text">Java 注释技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E6%B3%A8%E9%87%8A%E7%AC%A6%E5%8F%B7%E4%B8%8E%E6%B3%A8%E9%87%8A%E4%B9%8B%E9%97%B4%E6%9C%89%E7%A9%BA%E6%A0%BC"><span class="nav-number">3.1.</span> <span class="nav-text">0. 注释符号与注释之间有空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%95%BF%E5%BA%A6%E9%99%90%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text">1. 长度限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BB%A3%E7%A0%81%E5%B0%BE%E9%83%A8%E6%B3%A8%E9%87%8A-%E5%BA%94%E5%B0%BD%E9%87%8F%E5%B0%9D%E8%AF%95%E7%BC%A9%E7%9F%AD%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">2. 代码尾部注释(应尽量尝试缩短函数)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%8D%E8%A6%81%E5%8A%A0%E6%A1%86"><span class="nav-number">3.4.</span> <span class="nav-text">3.不要加框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B3%A8%E9%87%8A%E5%A4%9A%E8%A1%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">3.5.</span> <span class="nav-text">4. 注释多行代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%B3%A8%E9%87%8A%E4%BD%9C%E4%B8%BA%E5%88%87%E6%8D%A2%E5%BC%80%E5%85%B3%EF%BC%8C%E4%B8%B4%E6%97%B6%E6%B5%8B%E8%AF%95%E5%B1%8F%E8%94%BD%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5"><span class="nav-number">3.6.</span> <span class="nav-text">5. 注释作为切换开关，临时测试屏蔽代码片段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E5%90%84%E7%A7%8D%E6%B3%A8%E9%87%8A%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">Java 各种注释格式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8D%95%E8%A1%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">4.1.</span> <span class="nav-text">1. 单行注释 &#x2F;&#x2F;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#a-%E5%8D%95%E7%8B%AC%E8%A1%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">4.1.1.</span> <span class="nav-text">a. 单独行注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b-%E8%A1%8C%E5%A4%B4%E6%B3%A8%E9%87%8A"><span class="nav-number">4.1.2.</span> <span class="nav-text">b. 行头注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c-%E8%A1%8C%E5%B0%BE%E6%B3%A8%E9%87%8A"><span class="nav-number">4.1.3.</span> <span class="nav-text">c. 行尾注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9D%97%E6%B3%A8%E9%87%8A-%E2%80%A6"><span class="nav-number">4.2.</span> <span class="nav-text">2. 块注释 &#x2F;* … *&#x2F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%96%87%E6%A1%A3%E6%B3%A8%E9%87%8A-%E2%80%A6"><span class="nav-number">4.3.</span> <span class="nav-text">3. 文档注释 &#x2F;** …*&#x2F;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E6%B3%A8%E9%87%8A%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">Java注释具体实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E4%B8%80%E4%BA%9B%E9%9C%80%E8%A6%81%E8%A2%AB%E6%8A%9B%E5%BC%83%E7%9A%84%E4%B9%A0%E6%83%AF"><span class="nav-number">6.</span> <span class="nav-text">0. 一些需要被抛弃的习惯</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%BA%90%E6%96%87%E4%BB%B6%E6%B3%A8%E9%87%8A"><span class="nav-number">6.1.</span> <span class="nav-text">1. 源文件注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%B1%BB-%E6%A8%A1%E5%9D%97-%E6%B3%A8%E9%87%8A"><span class="nav-number">6.2.</span> <span class="nav-text">2. 类(模块)注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8E%A5%E5%8F%A3%E6%B3%A8%E9%87%8A"><span class="nav-number">6.3.</span> <span class="nav-text">3. 接口注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A"><span class="nav-number">6.4.</span> <span class="nav-text">4. 构造函数注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A"><span class="nav-number">6.5.</span> <span class="nav-text">5. 函数注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%96%B9%E6%B3%95%E6%B3%A8%E9%87%8A"><span class="nav-number">6.6.</span> <span class="nav-text">6. 方法注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%96%B9%E6%B3%95%E5%86%85%E9%83%A8%E6%B3%A8%E9%87%8A"><span class="nav-number">6.7.</span> <span class="nav-text">7. 方法内部注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E6%B3%A8%E9%87%8A"><span class="nav-number">6.8.</span> <span class="nav-text">8. 全局变量注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%B1%80%E9%83%A8%EF%BC%88%E4%B8%AD%E9%97%B4%EF%BC%89%E5%8F%98%E9%87%8F%E6%B3%A8%E9%87%8A"><span class="nav-number">6.9.</span> <span class="nav-text">9. 局部（中间）变量注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E5%AD%97%E6%AE%B5-filed-%E5%B1%9E%E6%80%A7%E6%B3%A8%E9%87%8A"><span class="nav-number">6.10.</span> <span class="nav-text">10. 字段(filed)&#x2F;属性注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-%E5%B8%B8%E9%87%8F%E6%B3%A8%E9%87%8A"><span class="nav-number">6.11.</span> <span class="nav-text">11. 常量注释</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eason Jeung"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Eason Jeung</p>
+  <div class="site-description" itemprop="description">Our whole world runs on big, complex pieces of code.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/easonjeung" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;easonjeung" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:easonjeung@outlook.com" title="E-Mail → mailto:easonjeung@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eason Jeung</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
